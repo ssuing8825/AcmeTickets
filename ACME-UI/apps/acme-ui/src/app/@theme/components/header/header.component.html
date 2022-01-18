@@ -1,0 +1,21 @@
+<mat-toolbar class="header">
+  <button *ngIf="isLoggedIn$ | async" mat-icon-button (click)="toggleSideNavVisibility()">
+    <mat-icon [matTooltip]="collapse === true ? 'Hide' : 'Show'" (click)="collapse = !collapse">menu</mat-icon>
+  </button>
+  <!-- <img src="assets/img/Eventellect_Logo.png" class="Eventellect-logo" alt="Eventellect-logo" /> -->
+  <h3>Eventellect</h3>
+  <!-- <span>Inbox</span> -->
+  <!-- <span class="spacer"></span> -->
+  <!-- <mat-slide-toggle [checked]="isDarkTheme$ | async" (change)="toggleDarkTheme($event.checked)">Dark theme
+  </mat-slide-toggle> -->
+  <span class="header-spacer"></span>
+  <!-- <button mat-icon-button>
+    <mat-icon>mail_outline</mat-icon>
+  </button>
+  <button mat-icon-button>
+    <mat-icon [matBadge]="notificationCount" [matBadgeHidden]="notificationCount === 0" matBadgeColor="warn"> notifications_none</mat-icon>
+  </button> -->
+  <button mat-icon-button matTooltip="Logout" (click)="logout()">
+    <mat-icon>power_settings_new</mat-icon>
+  </button>
+</mat-toolbar>

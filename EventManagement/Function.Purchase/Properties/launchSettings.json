@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Function.Purchase": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7075"
+    }
+  }
+}

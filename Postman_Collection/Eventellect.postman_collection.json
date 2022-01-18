@@ -1,0 +1,243 @@
+{
+	"info": {
+		"_postman_id": "37cddfd8-a00e-4dd1-9f68-0c34f0b1f545",
+		"name": "Eventellect",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Event",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"EventId\": \"{{$guid}}\",\r\n    \"EventName\": \"Saurabh\",\r\n    \"EventDate\": \"02/02/2022\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{EventManagement}}/api/EventApi",
+					"host": [
+						"{{EventManagement}}"
+					],
+					"path": [
+						"api",
+						"EventApi"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Event With Bulk TicketGroup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"eventId\": \"{{$guid}}\",\r\n    \"eventName\": \"Buckeyes Spring Game2\",\r\n    \"eventDate\": \"2022-05-10T16:03:07.151Z\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ITOPsSyncAPI}}/api/Event",
+					"host": [
+						"{{ITOPsSyncAPI}}"
+					],
+					"path": [
+						"api",
+						"Event"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Ticket Group",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"eventId\": \"{{EventId}}\",\r\n    \"tickets\": [\r\n        {\r\n            \"ticketId\":\"{{$guid}}\",\r\n            \"row\": \"D\",\r\n            \"seat\": \"1\"\r\n        },\r\n        {\r\n            \"ticketId\":\"{{$guid}}\",\r\n            \"row\": \"D\",\r\n            \"seat\": \"2\"\r\n        },\r\n        {\r\n            \"ticketId\":\"{{$guid}}\",\r\n            \"row\": \"D\",\r\n            \"seat\": \"3\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{InventoryFunction}}/api/TicketGroup",
+					"host": [
+						"{{InventoryFunction}}"
+					],
+					"path": [
+						"api",
+						"TicketGroup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Hold TicketGroup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"marketplaceId\": \"{{MarketplaceId}}\",\r\n  \"ticketGroupId\": \"{{TicketGroupId}}\",\r\n  \"numberOfTickets\": 1,\r\n  \"marketplaceOrderKey\": \"{{MarketplaceOrderKey}}\",\r\n  \"eventellectOrderId\": \"{{EventellectOrderId}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ITOPsSyncAPI}}/api/HoldTickets",
+					"host": [
+						"{{ITOPsSyncAPI}}"
+					],
+					"path": [
+						"api",
+						"HoldTickets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Increase Hold Timeout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"marketplaceId\": \"{{MarketplaceId}}\",\r\n    \"ticketGroupId\": \"{{TicketGroupId}}\",\r\n    \"allocatedTickets\": [\r\n        \"4621a7ca-f6fb-4018-83f9-b2da25db4383\"\r\n    ],\r\n    \"marketplaceOrderKey\": \"{{MarketplaceOrderKey}}\",\r\n    \"eventellectOrderId\": \"{{EventellectOrderId}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{InventoryFunction}}/api/IncreaseHoldTimeoutApi?code=BRHgIcQ7F2vukcoKhFad8nljOuc/7994dS2UTK4WRCQq7URnQKmgkQ==",
+					"host": [
+						"{{InventoryFunction}}"
+					],
+					"path": [
+						"api",
+						"IncreaseHoldTimeoutApi"
+					],
+					"query": [
+						{
+							"key": "code",
+							"value": "BRHgIcQ7F2vukcoKhFad8nljOuc/7994dS2UTK4WRCQq7URnQKmgkQ=="
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Purchase Held Order",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"marketplaceId\": \"{{MarketplaceId}}\",\r\n    \"ticketGroupId\": \"{{TicketGroupId}}\",\r\n    \"allocatedTickets\": [\r\n       \"62be19a5-a2c2-4be9-accd-ce9851ce5d8a\",\r\n        \"cf850a6e-b50e-4a67-ad86-015cee8b99ad\"\r\n    ],\r\n    \"marketplaceOrderKey\": \"{{MarketplaceOrderKey}}\",\r\n    \"eventellectOrderId\": \"{{EventellectOrderId}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{EventManagement}}/api/PurchaseHeldOrderApi?code=YSSh3WYSyaeg6W/m7fSL5r6w/OhFqORMHqAJjXg5D2PnqqBMz8U0iA==",
+					"host": [
+						"{{EventManagement}}"
+					],
+					"path": [
+						"api",
+						"PurchaseHeldOrderApi"
+					],
+					"query": [
+						{
+							"key": "code",
+							"value": "YSSh3WYSyaeg6W/m7fSL5r6w/OhFqORMHqAJjXg5D2PnqqBMz8U0iA=="
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cancel Order",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"marketplaceId\": \"{{MarketplaceId}}\",\r\n    \"ticketGroupId\": \"{{TicketGroupId}}\",\r\n    \"allocatedTickets\": [\r\n        \"0eb81ecb-4778-4670-b19a-36a173489cbc\"\r\n    ],\r\n    \"marketplaceOrderKey\": \"{{MarketplaceOrderKey}}\",\r\n    \"eventellectOrderId\": \"{{EventellectOrderId}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{EventManagement}}/api/CancelOrderApi?code=OKKXMgVtCaB4dpFOOvBoelTqQG2vs6caCo6WYPj7xa63gFQa7dKoWw==",
+					"host": [
+						"{{EventManagement}}"
+					],
+					"path": [
+						"api",
+						"CancelOrderApi"
+					],
+					"query": [
+						{
+							"key": "code",
+							"value": "OKKXMgVtCaB4dpFOOvBoelTqQG2vs6caCo6WYPj7xa63gFQa7dKoWw=="
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Allocate And Purchase",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"marketplaceId\": \"{{MarketplaceId}}\",\r\n  \"ticketGroupId\": null,\r\n  \"numberOfTickets\": 1,\r\n  \"marketplaceOrderKey\": \"{{MarketplaceOrderKey}}\",\r\n  \"needsAdditionalMarketplaceDataForFutureProcessing\":false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ITOPsSyncAPI}}/api/AllocateAndPurchase",
+					"host": [
+						"{{ITOPsSyncAPI}}"
+					],
+					"path": [
+						"api",
+						"AllocateAndPurchase"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

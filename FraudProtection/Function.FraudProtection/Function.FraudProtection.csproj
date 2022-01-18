@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<AzureFunctionsVersion>v4</AzureFunctionsVersion>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="NServiceBus.AzureFunctions.InProcess.ServiceBus" Version="2.*" />
+		<PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.20.0" />
+		<PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.0.1" />
+		<PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.20.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Update="host.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Sagas\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\..\EventManagement\Contracts\AcmeTickets.EventManagement.Contracts.csproj" />
+	  <ProjectReference Include="..\..\Inventory\Contracts\AcmeTickets.Inventory.Contracts.csproj" />
+	  <ProjectReference Include="..\..\Nsb.Commons\Acme.Nsb.Commons.csproj" />
+	  <ProjectReference Include="..\Contracts\AcmeTickets.FraudProtection.Contracts.csproj" />
+	  <ProjectReference Include="..\Domain\AcmeTickets.FraudProtection.Domain.csproj" />
+	  <ProjectReference Include="..\Internal.Contracts\AcmeTickets.FraudProtection.Internal.Contracts.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="..\..\local.settings.json" Link="local.settings.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+</Project>

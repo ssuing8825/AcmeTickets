@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "AcmeTickets.FraudProtection.Endpoint": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\ITOps\AcmeTickets.ITOps.Integration\AcmeTickets.ITOps.Integration.csproj" />
+    <ProjectReference Include="..\Contracts\AcmeTickets.EventManagement.Contracts.csproj" />
+    <ProjectReference Include="..\Domain\AcmeTickets.EventManagement.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

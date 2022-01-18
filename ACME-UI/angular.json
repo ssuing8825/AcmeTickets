@@ -1,0 +1,217 @@
+{
+  "version": 1,
+  "projects": {
+    "acme-ui": {
+      "projectType": "application",
+      "root": "apps/acme-ui",
+      "sourceRoot": "apps/acme-ui/src",
+      "prefix": "fm",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/acme-ui",
+            "index": "apps/acme-ui/src/index.html",
+            "main": "apps/acme-ui/src/main.ts",
+            "polyfills": "apps/acme-ui/src/polyfills.ts",
+            "tsConfig": "apps/acme-ui/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": ["apps/acme-ui/src/favicon.ico", "apps/acme-ui/src/assets"],
+            "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "node_modules/primeng/resources/themes/md-light-indigo/theme.css",
+              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/primeicons/primeicons.css",
+              "apps/acme-ui/src/styles.scss"
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": ["libs", "apps/acme-ui/src/app/@theme/styles"]
+            },
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "1000kb",
+                  "maximumError": "2mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kb",
+                  "maximumError": "6kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "apps/acme-ui/src/environments/environment.ts",
+                  "with": "apps/acme-ui/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            },
+            "staging": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "apps/acme-ui/src/environments/environment.ts",
+                  "with": "apps/acme-ui/src/environments/environment.staging.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "acme-ui:build:production"
+            },
+            "development": {
+              "browserTarget": "acme-ui:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "acme-ui:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/acme-ui/src/**/*.ts", "apps/acme-ui/src/**/*.html"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/acme-ui"],
+          "options": {
+            "jestConfig": "apps/acme-ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "storybook": {
+          "builder": "@nrwl/storybook:storybook",
+          "options": {
+            "uiFramework": "@storybook/angular",
+            "port": 4400,
+            "config": {
+              "configFolder": "apps/acme-ui/.storybook"
+            }
+          },
+          "configurations": {
+            "ci": {
+              "quiet": true
+            }
+          }
+        },
+        "build-storybook": {
+          "builder": "@nrwl/storybook:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "uiFramework": "@storybook/angular",
+            "outputPath": "dist/storybook/acme-ui",
+            "config": {
+              "configFolder": "apps/acme-ui/.storybook"
+            }
+          },
+          "configurations": {
+            "ci": {
+              "quiet": true
+            }
+          }
+        }
+      },
+      "tags": []
+    },
+    "acme-ui-e2e": {
+      "root": "apps/acme-ui-e2e",
+      "sourceRoot": "apps/acme-ui-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/acme-ui-e2e/cypress.json",
+            "devServerTarget": "acme-ui:serve:development"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "acme-ui:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/acme-ui-e2e/**/*.{js,ts}"]
+          }
+        }
+      },
+      "tags": [],
+      "implicitDependencies": ["acme-ui"]
+    },
+    "shared-ui": {
+      "projectType": "library",
+      "root": "libs/shared-ui",
+      "sourceRoot": "libs/shared-ui/src",
+      "prefix": "global-shared-ui",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared-ui"],
+          "options": {
+            "jestConfig": "libs/shared-ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/shared-ui/src/**/*.ts", "libs/shared-ui/src/**/*.html"]
+          }
+        }
+      },
+      "tags": []
+    }
+  }
+}

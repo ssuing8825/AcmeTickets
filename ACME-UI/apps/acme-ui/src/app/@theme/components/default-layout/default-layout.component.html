@@ -1,0 +1,30 @@
+<div [ngClass]="{ 'dark-theme': isDarkTheme$ | async }">
+  <ng-container *subscribe="isLoggedIn$; let isLoggedIn">
+    <fm-header></fm-header>
+    <mat-sidenav-container #sidenavContainer class="sidenav-container overflow-hidden" *ngLet="shouldOpenSideNav$ | async as isSideNavOpen">
+      <mat-sidenav
+        *ngIf="isLoggedIn"
+        class="mat-elevation-z8"
+        [fixedInViewport]="false"
+        [fixedTopGap]="60"
+        [fixedBottomGap]="60"
+        mode="side"
+        opened="{{ isSideNavOpen }}"
+      >
+        <fm-sidebar></fm-sidebar>
+      </mat-sidenav>
+
+      <mat-sidenav-content
+        #sidenavContent
+        *ngLet="isSideNavExpanded$ | async as isSideNavExpanded"
+        [@onMainContentChange]="mainContentAnimation$ | async"
+        [ngClass]="isSideNavOpen ? 'margin-left' : 'no-margin-left'"
+      >
+        <div class="main_content">
+          <router-outlet></router-outlet>
+        </div>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+    <fm-footer></fm-footer>
+  </ng-container>
+</div>

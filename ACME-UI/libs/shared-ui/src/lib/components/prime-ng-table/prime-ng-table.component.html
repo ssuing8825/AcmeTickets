@@ -1,0 +1,69 @@
+<!-- <div class="table-container w-full" *ngIf="tableConfig$ | async as tableConfig">
+  <p-table
+    [value]="tableConfig.data"
+    [paginator]="tableConfig.pagination"
+    [rows]="tableConfig?.filters?.rows || 10"
+    [totalRecords]="tableConfig?.totalRecords || 0"
+    [showCurrentPageReport]="tableConfig.showCurrentPageReport || true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [rowsPerPageOptions]="tableConfig.rowsPerPageOptions || [10, 25, 50]"
+    [lazy]="true"
+    (onLazyLoad)="onFiltersChanged($event, tableConfig)"
+    [loading]="tableConfig.isLoading || false"
+    [lazyLoadOnInit]="false"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <ng-container *ngFor="let hc of tableConfig.headerConfig; trackBy: trackByColumnName">
+          <th *ngIf="!hc.isSortable && !hc.isCustomActionColumn">{{ hc.displayName }}</th>
+          <th *ngIf="hc.isSortable && !hc.isCustomActionColumn" pSortableColumn="{{ hc.propertyName }}">
+            {{ hc.displayName }} <p-sortIcon field="{{ hc.propertyName }}"></p-sortIcon>
+          </th>
+          <th *ngIf="hc.isCustomActionColumn">{{ hc.displayName }}</th>
+        </ng-container>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-data>
+      <tr>
+        <ng-container *ngFor="let hc of tableConfig.headerConfig; trackBy: trackByColumnName">
+          <td *ngIf="!hc.isCustomActionColumn && !hc.isCustomTemplate">{{ data | readObjectByStringPath: hc.pathToProperty:'' }}</td>
+          <td *ngIf="hc.isCustomTemplate && hc.templateComponentRef">
+            <Eventellect-dynamic-template
+              [dynamicTemplateConfig]="{ component: hc.templateComponentRef, data: data }"
+            ></Eventellect-dynamic-template>
+          </td>
+          <td *ngIf="hc.isCustomActionColumn && hc.rowActions && hc.rowActions.length > 0">
+            <span *ngFor="let action of hc.rowActions">
+              <span *ngIf="action.actionType === ActionType.OutputEvent">
+                <button
+                  title="{{ action.tooltipTitle }}"
+                  mat-icon-button
+                  color="{{ action.buttonColorClass }}"
+                  aria-label=""
+                  (click)="onCustomActionClick(data, action.name)"
+                >
+                  <fa-icon *ngIf="action.fontAwesomeIcon" [icon]="action.fontAwesomeIcon"></fa-icon>
+                  <mat-icon *ngIf="action.materialIcon">{{ action.materialIcon }}</mat-icon>
+                </button>
+              </span>
+              <span *ngIf="action.actionType === ActionType.Link">
+                <button
+                  title="{{ action.tooltipTitle }}"
+                  mat-icon-button
+                  color="{{ action.buttonColorClass }}"
+                  aria-label=""
+                  (click)="onCustomActionClick(data, action.name)"
+                >
+                  <a routerLink="{{ action.link }}">
+                    <fa-icon *ngIf="action.fontAwesomeIcon" [icon]="action.fontAwesomeIcon"></fa-icon>
+                    <mat-icon *ngIf="action.materialIcon">{{ action.materialIcon }}</mat-icon>
+                  </a>
+                </button>
+              </span>
+            </span>
+          </td>
+        </ng-container>
+      </tr>
+    </ng-template>
+  </p-table>
+</div> -->

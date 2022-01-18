@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <AzureFunctionsVersion>v4</AzureFunctionsVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.20.0" />
+    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.0.1" />
+    <PackageReference Include="NServiceBus.AzureFunctions.InProcess.ServiceBus" Version="2.1.0" />
+    <PackageReference Include="NServiceBus.Persistence.CosmosDB" Version="1.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Inventory\Contracts\AcmeTickets.Inventory.Contracts.csproj" />
+    <ProjectReference Include="..\..\Nsb.Commons\Acme.Nsb.Commons.csproj" />
+    <ProjectReference Include="..\Domain\AcmeTickets.Fulfillment.Domain.csproj" />
+  </ItemGroup>
+	<ItemGroup>
+		<Content Include="..\..\local.settings.json" Link="local.settings.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+  <ItemGroup>
+    <None Update="host.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>

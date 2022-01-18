@@ -1,0 +1,305 @@
+<div class="grid-container">
+  <mat-grid-list cols="5" rowHeight="1100px">
+    <mat-grid-tile [colspan]="2">
+      <mat-card class="widget-card mat-elevation-z8">
+        <mat-card-header>
+          <mat-card-title>
+            <font class="">Create Event</font>
+            <button mat-icon-button class="card-menu" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu" xPosition="before">
+              <button mat-menu-item>Expand</button>
+              <button mat-menu-item>Remove</button>
+            </mat-menu>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="text" fxLayout="row" fxLayoutAlign="start center">
+            <div fxLayout="column" fxFlex="100">
+              <form [formGroup]="eventForm" (ngSubmit)="onAddEvent()">
+                <p>
+                  <mat-form-field class="full-width-input" appearance="standard">
+                    <input matInput placeholder="Name" formControlName="name" required />
+                    <mat-error *ngIf="name?.errors?.required">name is required.</mat-error>
+                    <mat-error *ngIf="name?.errors?.minlength">name must be at least 4 characters long.</mat-error>
+                    <br />
+                  </mat-form-field>
+                </p>
+                <p>
+                  <mat-form-field class="full-width-input" appearance="standard">
+                    <mat-label>Choose a date</mat-label>
+                    <input matInput [matDatepicker]="picker" (dateChange)="dateChanged($event)" />
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-error *ngIf="date?.errors?.required">date is required.</mat-error>
+                  </mat-form-field>
+                </p>
+                <mat-error class="error-class" *ngIf="addEventFailed">
+                  <span
+                    ><b> {{ errorMessage }}</b>
+                  </span>
+                </mat-error>
+                <button type="submit" mat-raised-button color="accent" [disabled]="!eventForm.valid || loader" matTooltip="Add Event">
+                  Add Event
+                  <mat-icon *ngIf="loader"><mat-spinner color="warn" diameter="20"> </mat-spinner></mat-icon>
+                </button>
+                <p></p>
+                <p>{{ addRequestApiResponseMessage }}</p>
+              </form>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="3">
+      <mat-card class="widget-card mat-elevation-z8">
+        <mat-card-header>
+          <mat-card-title>
+            <font class="">Order</font>
+            <button mat-icon-button class="card-menu" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu" xPosition="before">
+              <button mat-menu-item>Expand</button>
+              <button mat-menu-item>Remove</button>
+            </mat-menu>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="text" fxLayout="row" fxLayoutAlign="start center">
+            <div fxLayout="column" fxFlex="100">
+              <form [formGroup]="orderForm" (ngSubmit)="purchaseOrder()">
+                <p>
+                  <mat-form-field class="full-width-input" appearance="fill">
+                    <mat-label>Action</mat-label>
+                    <mat-select disableRipple cdkFocusInitial formControlName="action" required (selectionChange)="onActionChanged()">
+                      <mat-option>-- Select Action --</mat-option>
+                      <mat-option [value]="'allocateAndPurchase'">Allocate & Purchase</mat-option>
+                      <mat-option [value]="'holdOrder'">Hold Order</mat-option>
+                      <mat-option [value]="'increaseHoldTimeout'">Increase Hold Timeout</mat-option>
+                      <mat-option [value]="'cancelOrder'">Cancel Order</mat-option>
+                      <mat-option [value]="'purchaseHeldOrder'">Purchase Held Order</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="actionCtrl?.errors?.required">ActionCtrl is required.</mat-error>
+                  </mat-form-field>
+                </p>
+                <p>
+                  <mat-form-field class="full-width-input" appearance="standard">
+                    <mat-label>Marketplace Id</mat-label>
+                    <input
+                      type="number"
+                      matInput
+                      placeholder="MarketplaceId"
+                      formControlName="marketplaceId"
+                      required
+                      [hidden]="marketplaceIdCtrl?.disabled"
+                    />
+                    <mat-error *ngIf="marketplaceIdCtrl?.errors?.required">marketplaceId is required.</mat-error>
+                    <br />
+                  </mat-form-field>
+                </p>
+                <p>
+                  <mat-form-field class="full-width-input" appearance="standard">
+                    <mat-label>Marketplace Order Key</mat-label>
+                    <input
+                      type="text"
+                      matInput
+                      placeholder="MarketplaceOrderKey"
+                      formControlName="marketplaceOrderKey"
+                      required
+                      [hidden]="marketplaceOrderKeyCtrl?.disabled"
+                    />
+                    <mat-error *ngIf="marketplaceOrderKeyCtrl?.errors?.required">marketplaceId is required.</mat-error>
+                    <br />
+                  </mat-form-field>
+                </p>
+                <p>
+                  <mat-form-field class="full-width-input" appearance="standard">
+                    <mat-label>Eventellect Order Id</mat-label>
+                    <input
+                      type="text"
+                      matInput
+                      placeholder="EventellectOrderId"
+                      formControlName="eventellectOrderId"
+                      required
+                      [hidden]="eventellectOrderIdCtrl?.disabled"
+                    />
+                    <mat-error *ngIf="eventellectOrderIdCtrl?.errors?.required">marketplaceId is required.</mat-error>
+                    <br />
+                  </mat-form-field>
+                </p>
+                <p>
+                  <mat-form-field class="full-width-input" appearance="standard">
+                    <mat-label>Allocated Tickets</mat-label>
+                    <textarea
+                      cols="30"
+                      rows="2"
+                      matInput
+                      placeholder="Allocated Tickets"
+                      formControlName="allocatedTickets"
+                      [hidden]="allocatedTicketsCtrl?.disabled"
+                    ></textarea>
+                    <mat-error *ngIf="allocatedTicketsCtrl?.errors?.required">allocatedTickets is required.</mat-error>
+                    <br />
+                  </mat-form-field>
+                </p>
+                <p>
+                  <mat-form-field class="full-width-input" appearance="fill">
+                    <mat-label>Event</mat-label>
+                    <mat-select
+                      disableRipple
+                      cdkFocusInitial
+                      formControlName="events"
+                      required
+                      (selectionChange)="onEventChanged()"
+                      [hidden]="eventsCtrl?.disabled"
+                    >
+                      <mat-option>-- Select Event --</mat-option>
+                      <mat-option *ngFor="let event of allEvents; trackBy: trackByEventId" [value]="event">{{
+                        event.eventName
+                      }}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="eventsCtrl?.errors?.required">Event is required.</mat-error>
+                  </mat-form-field>
+                </p>
+                <p>
+                  <mat-form-field class="full-width-input" appearance="fill">
+                    <mat-label>Ticket Group</mat-label>
+                    <mat-select
+                      disableRipple
+                      cdkFocusInitial
+                      formControlName="ticketGroups"
+                      required
+                      [disabled]="!eventsCtrl || !eventsCtrl.value || orderLoader"
+                      [hidden]="ticketGroupsCtrl?.disabled"
+                    >
+                      <mat-option>-- Select TicketGroup --</mat-option>
+                      <mat-option *ngFor="let ticketGroup of ticketGroups; trackBy: trackByTicketGroupId" [value]="ticketGroup">{{
+                        ticketGroup.id
+                      }}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="ticketGroupsCtrl?.errors?.required">TicketGroup is required.</mat-error>
+                  </mat-form-field>
+                </p>
+                <p>
+                  <mat-form-field class="full-width-input" appearance="standard">
+                    <mat-label>Number of Tickets</mat-label>
+                    <input
+                      type="number"
+                      matInput
+                      placeholder="Number of tickets"
+                      formControlName="numberOfSeats"
+                      required
+                      [hidden]="numberOfSeatsCtrl?.disabled"
+                    />
+                    <mat-error *ngIf="numberOfSeatsCtrl?.errors?.required">Number or tickets is required.</mat-error>
+                    <br />
+                  </mat-form-field>
+                </p>
+                <p>
+                  <mat-form-field class="full-width-input" appearance="fill">
+                    <mat-label>Need Additional Marketplace Data For Future Processing?</mat-label>
+                    <mat-select
+                      disableRipple
+                      cdkFocusInitial
+                      formControlName="needsAdditionalMarketplaceDataForFutureProcessing"
+                      required
+                      [hidden]="needsAdditionalMarketplaceDataForFutureProcessingCtrl?.disabled"
+                    >
+                      <mat-option>-- Select needsAdditionalMarketplaceDataForFutureProcessing --</mat-option>
+                      <mat-option [value]="true">Yes</mat-option>
+                      <mat-option [value]="false">No</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="needsAdditionalMarketplaceDataForFutureProcessingCtrl?.errors?.required"
+                      >TicketGroup is required.</mat-error
+                    >
+                  </mat-form-field>
+                </p>
+                <mat-error class="error-class" *ngIf="allocateAndPurchaseEventFailed">
+                  <span
+                    ><b> {{ errorMessage }}</b>
+                  </span>
+                </mat-error>
+                <button
+                  type="submit"
+                  mat-raised-button
+                  color="accent"
+                  [disabled]="!orderForm.valid || orderLoader"
+                  matTooltip="Allocate and Purchase"
+                  *ngIf="actionCtrl && actionCtrl.value && actionCtrl.value === 'allocateAndPurchase'"
+                >
+                  Allocate and Purchase
+                  <mat-icon *ngIf="orderLoader"><mat-spinner color="warn" diameter="20"> </mat-spinner></mat-icon>
+                </button>
+                <button
+                  type="submit"
+                  mat-raised-button
+                  color="accent"
+                  [disabled]="!orderForm.valid || orderLoader"
+                  matTooltip="Hold Tickets"
+                  *ngIf="actionCtrl && actionCtrl.value && actionCtrl.value === 'holdOrder'"
+                >
+                  Hold Tickets
+                  <mat-icon *ngIf="orderLoader"><mat-spinner color="warn" diameter="20"> </mat-spinner></mat-icon>
+                </button>
+                <button
+                  type="submit"
+                  mat-raised-button
+                  color="accent"
+                  [disabled]="!orderForm.valid || orderLoader"
+                  matTooltip="Increase Hold Timeout"
+                  *ngIf="actionCtrl && actionCtrl.value && actionCtrl.value === 'increaseHoldTimeout'"
+                >
+                  Increase Hold Timeout
+                  <mat-icon *ngIf="orderLoader"><mat-spinner color="warn" diameter="20"> </mat-spinner></mat-icon>
+                </button>
+                <button
+                  type="submit"
+                  mat-raised-button
+                  color="accent"
+                  [disabled]="!orderForm.valid || orderLoader"
+                  matTooltip="Cancel Order"
+                  *ngIf="actionCtrl && actionCtrl.value && actionCtrl.value === 'cancelOrder'"
+                >
+                  Cancel Order
+                  <mat-icon *ngIf="orderLoader"><mat-spinner color="warn" diameter="20"> </mat-spinner></mat-icon>
+                </button>
+                <button
+                  type="submit"
+                  mat-raised-button
+                  color="accent"
+                  [disabled]="!orderForm.valid || orderLoader"
+                  matTooltip="Purchase Held Order"
+                  *ngIf="actionCtrl && actionCtrl.value && actionCtrl.value === 'purchaseHeldOrder'"
+                >
+                  Purchase Held Order
+                  <mat-icon *ngIf="orderLoader"><mat-spinner color="warn" diameter="20"> </mat-spinner></mat-icon>
+                </button>
+                <p></p>
+                <p *ngIf="holdOrderApiResponseMessage">holdOrderApiResponseMessage :: {{ holdOrderApiResponseMessage }}</p>
+                <p></p>
+                <p *ngIf="allocateAndPurchaseApiResponseMessage">
+                  allocateAndPurchaseApiResponseMessage :: {{ allocateAndPurchaseApiResponseMessage }}
+                </p>
+                <p></p>
+                <p *ngIf="cancelOrderApiResponseMessage">cancelOrderApiResponseMessage :: {{ cancelOrderApiResponseMessage }}</p>
+                <p></p>
+                <p *ngIf="purchaseHeldOrderApiResponseMessage">
+                  purchaseHeldOrderApiResponseMessage :: {{ purchaseHeldOrderApiResponseMessage }}
+                </p>
+                <p></p>
+                <p *ngIf="increaseHoldTimeoutApiResponseMessage">
+                  increaseHoldTimeoutApiResponseMessage :: {{ increaseHoldTimeoutApiResponseMessage }}
+                </p>
+              </form>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <mat-divider></mat-divider>
+</div>

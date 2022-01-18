@@ -1,0 +1,85 @@
+version: '3.4'
+
+services:
+  acme.accounting.endpoint:
+    image: ${DOCKER_REGISTRY-}acmeaccountingendpoint
+    build:
+      context: .
+      dockerfile: Acme.Accounting.Endpoint/Dockerfile
+
+  acme.accountsreceivable.api:
+    image: ${DOCKER_REGISTRY-}acmeaccountsreceivableapi
+    build:
+      context: .
+      dockerfile: Acme.AccountsReceivable.Api/Dockerfile
+
+
+  acme.accountsreceivable.endpoint:
+    image: ${DOCKER_REGISTRY-}acmeaccountsreceivableendpoint
+    build:
+      context: .
+      dockerfile: Acme.AccountsReceivable.Endpoint/Dockerfile
+
+
+  acme.paymentauthorization.api:
+    image: ${DOCKER_REGISTRY-}acmepaymentauthorizationapi
+    build:
+      context: .
+      dockerfile: Acme.PaymentAuthorization.Api/Dockerfile
+
+
+  acme.paymentauthorization.endpoint:
+    image: ${DOCKER_REGISTRY-}acmepaymentauthorizationendpoint
+    build:
+      context: .
+      dockerfile: Acme.PaymentAuthorization.Endpoint/Dockerfile
+
+
+  acme.policyequity.endpoint:
+    image: ${DOCKER_REGISTRY-}acmepolicyequityendpoint
+    build:
+      context: .
+      dockerfile: Acme.PolicyEquity.Endpoint/Dockerfile
+
+
+  acme.policyservicing.api:
+    image: ${DOCKER_REGISTRY-}acmepolicyservicingapi
+    build:
+      context: .
+      dockerfile: Acme.PolicyServicing.Api/Dockerfile
+
+
+  acme.policyservicing.endpoint:
+    image: ${DOCKER_REGISTRY-}acmepolicyservicingendpoint
+    build:
+      context: .
+      dockerfile: Acme.PolicyServicing.Endpoint/Dockerfile
+
+
+  acme.premiumreporting.endpoint:
+    image: ${DOCKER_REGISTRY-}acmepremiumreportingendpoint
+    build:
+      context: .
+      dockerfile: Acme.PremiumReporting.Endpoint/Dockerfile
+
+
+  acme.pricing.api:
+    image: ${DOCKER_REGISTRY-}acmepricingapi
+    build:
+      context: .
+      dockerfile: Acme.Pricing.Api/Dockerfile
+
+
+  acme.pricing.endpoint:
+    image: ${DOCKER_REGISTRY-}acmepricingendpoint
+    build:
+      context: .
+      dockerfile: Acme.Pricing.Endpoint/Dockerfile
+
+
+  acme.statemandatedcharges.endpoint:
+    image: ${DOCKER_REGISTRY-}acmestatemandatedchargesendpoint
+    build:
+      context: .
+      dockerfile: Acme.StateMandatedCharges.Endpoint/Dockerfile
+

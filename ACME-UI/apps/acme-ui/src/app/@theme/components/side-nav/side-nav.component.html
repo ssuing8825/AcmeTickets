@@ -1,0 +1,102 @@
+<div *subscribe="vm$; let vm" class="sidenav_container" [@onSideNavChange]="vm.isSideNavExpanded ? 'open' : 'close'">
+  <div style="height: 100%">
+    <div class="user-details">
+      <mat-nav-list>
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px">
+          <div>
+            <a>
+              <img
+                [@resizeAvatarOnSideNavCollapseExpand]="vm.isSideNavExpanded ? 'big' : 'small'"
+                class=""
+                src="../../../../assets/img/default-avatar.png"
+                alt=""
+              />
+            </a>
+          </div>
+          <div *ngIf="vm.showNavItemTitle">
+            <a href="#">
+              <div
+                *ngIf="vm.loggedInUser && vm.loggedInUser.currentRole && vm.loggedInUser.currentRole.roleName"
+                fxLayout="column"
+                fxLayoutAlign="end start"
+              >
+                <div>
+                  <b class="user-name">{{ vm.loggedInUser.fullName | titlecase }}</b>
+                </div>
+                <div class="role-select-container">
+                  <ng-container *ngIf="vm.loggedInUser.roles && vm.loggedInUser.roles.length === 1">
+                    <div>
+                      <font class="mat-caption">{{ vm.loggedInUser.currentRole.roleName }} </font>
+                    </div>
+                  </ng-container>
+
+                  <!-- <ng-container *ngIf="vm.loggedInUser.businessUnitList?.length > 1">
+                    <mat-form-field appearance="standard" class="role-select">
+                      <mat-select
+                        matTooltip="Select Business Unit"
+                        [value]="vm.loggedInUser.id"
+                        (selectionChange)="onBusinessUnitChanged($event, vm.loggedInUser)"
+                        panelClass="role-select-panel"
+                      >
+                        <mat-option
+                          [value]="businessUnitData.businessUnitId"
+                          *ngFor="let businessUnitData of vm.loggedInUser.businessUnitList"
+                          >{{ businessUnitData.businessUnitName | EventellectCamelCaseToWords }}</mat-option
+                        >
+                      </mat-select>
+                    </mat-form-field>
+                    <br />
+                  </ng-container> -->
+
+                  <ng-container *ngIf="vm.loggedInUser.roles && vm.loggedInUser.roles.length > 1">
+                    <mat-form-field appearance="standard" class="role-select">
+                      <mat-select
+                        matTooltip="Select Role"
+                        [value]="vm.loggedInUser.currentRole.roleId"
+                        (selectionChange)="onRoleChanged($event, vm.loggedInUser)"
+                        panelClass="role-select-panel"
+                      >
+                        <mat-option [value]="role.roleId" *ngFor="let role of vm.loggedInUser.roles">{{ role.roleName }}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </ng-container>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </mat-nav-list>
+    </div>
+    <mat-divider></mat-divider>
+    <div>
+      <mat-nav-list>
+        <mat-nav-list>
+          <ng-container *ngFor="let item of vm.sideNavMenus">
+            <ng-container *ngIf="item && item.acl && item.acl.role">
+              <fm-menu-list-item
+                *ngIf="item.acl.role | sideNavMenuByRole: item.acl.roleType:vm.loggedInUser"
+                [item]="item"
+                [showNavItemTitle]="vm.showNavItemTitle"
+                [matTooltip]="collapse === false ? item.displayName : ''"
+              >
+              </fm-menu-list-item>
+            </ng-container>
+          </ng-container>
+        </mat-nav-list>
+      </mat-nav-list>
+    </div>
+  </div>
+
+  <span class="spacer"></span>
+  <div fxLayout="row" fxLayoutAlign="end center" style="padding: 0px 10px">
+    <button
+      mat-icon-button
+      (click)="onSideNavSizeToggle()"
+      [matTooltip]="collapse === true ? 'Hide' : 'Show'"
+      (click)="collapse = !collapse"
+    >
+      <mat-icon *ngIf="vm.isSideNavExpanded">arrow_left</mat-icon>
+      <mat-icon *ngIf="!vm.isSideNavExpanded">arrow_right</mat-icon>
+    </button>
+  </div>
+</div>

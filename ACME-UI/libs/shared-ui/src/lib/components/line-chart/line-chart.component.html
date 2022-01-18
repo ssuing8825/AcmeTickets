@@ -1,0 +1,36 @@
+<mat-card class="widget-card mat-elevation-z8" *subscribe="options$; let options">
+  <mat-card-header>
+    <mat-card-title>
+      <font class="">{{ options?.name }}</font>
+      <button mat-icon-button class="card-menu" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu" xPosition="before">
+        <button mat-menu-item>Expand</button>
+        <button mat-menu-item>Remove</button>
+      </mat-menu>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="dashboard-card-content">
+    <div class="text" fxLayout="row" fxLayoutAlign="start center">
+      <div>
+        <span class="total mat-display-2"></span>
+      </div>
+    </div>
+    <div *subscribe="showChart$; let showChart" class="chart-container">
+      <ngx-charts-line-chart
+        *ngIf="showChart && options && options.data && options.data.length > 0"
+        [scheme]="options.colorScheme"
+        [legend]="false"
+        [showXAxisLabel]="true"
+        [showYAxisLabel]="true"
+        [xAxis]="true"
+        [yAxis]="true"
+        [xAxisLabel]="options.xAxisLabel || ''"
+        [yAxisLabel]="options.yAxisLabel || ''"
+        [results]="options.data"
+      >
+      </ngx-charts-line-chart>
+    </div>
+  </mat-card-content>
+</mat-card>

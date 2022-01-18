@@ -1,0 +1,36 @@
+<a
+  *ngIf="!item.children || !item.children.length"
+  mat-list-item
+  [ngStyle]="{ 'padding-left': depth * 12 + 'px' }"
+  routerLink="{{ item.route }}"
+  routerLinkActive="active"
+>
+  <fa-icon [icon]="item.fontAwesomeIcon"></fa-icon>
+  <span class="menuItemName" fxFlex [@showHideMenuText]="showNavItemTitle ? 'show' : 'hide'">{{ item.displayName }} </span>
+</a>
+
+<a
+  *ngIf="item.children && item.children.length > 0"
+  mat-list-item
+  [ngStyle]="{ 'padding-left': depth * 12 + 'px' }"
+  (click)="expanded = !expanded"
+  [ngClass]="{ expanded: expanded }"
+>
+  <fa-icon [icon]="item.fontAwesomeIcon"></fa-icon>
+  <span class="menuItemName" fxFlex [@showHideMenuText]="showNavItemTitle ? 'show' : 'hide'">{{ item.displayName }} </span>
+
+  <span [@showHideMenuText]="showNavItemTitle ? 'show' : 'hide'" *ngIf="item.children && item.children.length">
+    <span fxFlex></span>
+    <mat-icon class="menuExpandIcon" [@indicatorRotate]="expanded ? 'expanded' : 'collapsed'"> expand_more </mat-icon>
+  </span>
+</a>
+
+<div *ngIf="expanded">
+  <fm-menu-list-item
+    [@showHideMenuText]="showNavItemTitle ? 'show' : 'hide'"
+    *ngFor="let child of item.children"
+    [item]="child"
+    [depth]="depth + 1"
+  >
+  </fm-menu-list-item>
+</div>

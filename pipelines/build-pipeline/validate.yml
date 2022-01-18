@@ -1,0 +1,57 @@
+# Azure DevOps pipeline for CI of Terraform code
+variables:
+- group: azbackend
+- name: spn-client-id
+  value: "spn-client-id=$(clientid)"
+- name: spn-client-secret
+  value: "spn-client-secret=$(clientsecret)"
+- name: spn-tenant-id
+  value: "spn-tenant-id=$(tenantid)"
+
+trigger:
+  branches:
+    exclude:
+    - main # to ensure that pipeline gets triggered for every brach except main
+
+jobs:
+- job: Job_1
+  displayName: Agent job 1
+  pool:
+    vmImage: ubuntu-18.04
+ 
+  steps:
+  - checkout: self
+
+   # Init
+  - task: TerraformInstaller@0
+    displayName: Install Terraform latest
+
+  - task: CmdLine@2
+    displayName: terraform init
+    inputs:
+      script: terraform init -backend-config="access_key=$(stazbackend-key1)"
+      workingDirectory: terraform-code
+  
+   # Format check
+  - task: CmdLine@2
+    displayName: terraform format
+    inputs:
+      script: terraform fmt 
+      workingDirectory: terraform-code
+
+   # Validate
+  - task: CmdLine@2
+    displayName: terraform validate
+    inputs:
+      script: >+
+        terraform validate
+      workingDirectory: terraform-code
+
+    # Plan
+  - task: CmdLine@2
+    displayName: terraform plan
+    inputs:
+      script: >2
+         terraform plan -lock=false -input=false -var="spn-client-id=$(clientid)" -var="spn-client-secret=$(clientsecret)" -var="spn-tenant-id=$(tenantid)"
+      workingDirectory: terraform-code
+

@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "AcmeTickets.Fulfillment.Endpoint": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

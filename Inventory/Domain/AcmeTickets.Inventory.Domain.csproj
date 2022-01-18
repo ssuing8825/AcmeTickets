@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NServiceBus" Version="7.6.0" />
+    <PackageReference Include="NServiceBus.Persistence.CosmosDB" Version="1.0.0" />
+    <PackageReference Include="NServiceBus.Transport.AzureServiceBus" Version="2.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\EventManagement\Internal.Contracts\AcmeTickets.EventManagement.Internal.Contracts.csproj" />
+    <ProjectReference Include="..\Contracts\AcmeTickets.Inventory.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

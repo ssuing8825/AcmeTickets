@@ -1,0 +1,9 @@
+@use '../../../@theme/styles/variables' as variables;
+
+footer {
+  padding: 10px 20px;
+  padding-left: 7px;
+  @include variables.get-theme-color-property(background, primary);
+  @include variables.get-theme-color-property(color, primary, default-contrast); // // or 'lighter-contrast' or 'darker-contrast'
+  color: #fff;
+}

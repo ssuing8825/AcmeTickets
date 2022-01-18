@@ -1,0 +1,52 @@
+@use '../../styles/variables' as variables;
+
+.min-stat-widget {
+  @include variables.card-position();
+}
+
+.card-menu {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+}
+
+.dashboard-card-content {
+  text-align: center;
+}
+
+.chart-container {
+  width: calc(100%);
+  height: 70px;
+}
+
+mat-card-header.mini-stat-card-header {
+  > .mat-card-header-text {
+    margin: 0px !important;
+  }
+}
+
+.text {
+  .total {
+    @include variables.get-theme-color-property(color, primary, 300);
+  }
+
+  .trend.success {
+    color: variables.$success;
+  }
+  .trend.warning {
+    color: variables.$warning;
+  }
+  .trend.danger {
+    color: variables.$danger;
+  }
+
+  .gain.success {
+    color: variables.$success;
+  }
+  .gain.warning {
+    color: variables.$warning;
+  }
+  .gain.danger {
+    color: variables.$danger;
+  }
+}

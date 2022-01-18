@@ -1,0 +1,33 @@
+@use '../../../@theme/styles/variables' as variables;
+
+.menuItemName {
+  margin-left: 5px;
+  font-size: 14px;
+}
+
+fa-icon {
+  margin: auto;
+  font-size: 14px;
+}
+
+mat-icon {
+  margin: auto;
+  font-size: 14px;
+}
+
+.menuExpandIcon {
+  margin-top: 5px;
+}
+
+.active {
+  @include variables.get-theme-color-property(background, primary);
+  @include variables.get-theme-color-property(color, primary, default-contrast);
+  &:hover {
+    @include variables.get-theme-color-property(background, primary);
+    @include variables.get-theme-color-property(color, primary, default-contrast);
+  }
+  &:focus {
+    @include variables.get-theme-color-property(background, primary);
+    @include variables.get-theme-color-property(color, primary, default-contrast);
+  }
+}

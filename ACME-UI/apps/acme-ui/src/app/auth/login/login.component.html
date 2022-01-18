@@ -1,0 +1,49 @@
+<!-- <div class="container" id="spinerLoader" *ngIf="loader">
+  <div class="loader">Loading...</div>
+</div> -->
+
+<div fxLayout="row" fxLayoutAlign="space-between">
+  <mat-card fxLayout="column" fxFlex="33">
+    <mat-card-content>
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        <h2><b>Log In</b></h2>
+        <mat-divider></mat-divider>
+        <mat-form-field class="full-width-input" appearance="standard">
+          <input matInput placeholder="Email" formControlName="email" required />
+          <mat-error *ngIf="email?.errors?.required">email is required.</mat-error>
+          <mat-error *ngIf="email?.errors?.minlength">email must be at least 4 characters long.</mat-error>
+          <mat-error *ngIf="email?.errors?.forbiddenName">email cannot be Bob.</mat-error>
+          <br />
+        </mat-form-field>
+        <mat-form-field class="full-width-input" appearance="standard">
+          <input matInput [type]="hide ? 'password' : 'text'" placeholder="Password" formControlName="password" required />
+          <button
+            type="button"
+            mat-icon-button
+            matSuffix
+            (click)="hide = !hide"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide"
+          >
+            <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          <mat-error *ngIf="password?.errors?.required">password is required.</mat-error>
+          <mat-error *ngIf="password?.errors?.minlength">password must be at least 4 characters long.</mat-error>
+          <mat-error *ngIf="password?.errors?.forbiddenName">password cannot be Bob.</mat-error>
+        </mat-form-field>
+        <mat-error class="error-class" *ngIf="loginFailed">
+          <span
+            ><b> {{ loginErrorMessage }}</b>
+          </span>
+        </mat-error>
+        <button type="submit" mat-raised-button color="accent" [disabled]="!loginForm.valid" *ngIf="!loader" matTooltip="Login">
+          Login
+        </button>
+
+        <button class="loader" type="submit" mat-raised-button color="accent" *ngIf="loader" matTooltip="Login Inprogress">
+          <mat-progress-spinner class="example-margin" [color]="'warn'" [mode]="'indeterminate'" [diameter]="18"> </mat-progress-spinner>
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

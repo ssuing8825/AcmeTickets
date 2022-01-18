@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Function.Fulfillment": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7077"
+    }
+  }
+}

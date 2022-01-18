@@ -1,0 +1,118 @@
+<div class="table-container">
+  <div class="loader-container">
+    <mat-progress-bar mode="query" *ngIf="isLoading" color="warn"></mat-progress-bar>
+  </div>
+  <ng-container *subscribe="tableConfig$; let tableConfig">
+    <ng-container *ngIf="tableConfig">
+      <table
+        mat-table
+        [dataSource]="tableConfig.data"
+        class="full-width-table w-full"
+        matSort
+        (matSortChange)="onSortChange($event, tableConfig)"
+        aria-label="Elements"
+        multiTemplateDataRows
+      >
+        <ng-container matColumnDef="{{ hc.propertyName }}" *ngFor="let hc of tableConfig.headerConfig; trackBy: trackByColumnName">
+          <ng-container *ngIf="hc.isSortable; else nonSortableHeader">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ hc.displayName }}</th>
+          </ng-container>
+          <ng-template #nonSortableHeader>
+            <th mat-header-cell *matHeaderCellDef>{{ hc.displayName }}</th>
+          </ng-template>
+
+          <td mat-cell *matCellDef="let row">
+            <ng-container *ngIf="!hc.isCustomActionColumn && !hc.isCustomTemplate">
+              {{ row | globalLibReadObjectByStringPath: hc.pathToProperty:'' }}
+            </ng-container>
+
+            <ng-container *ngIf="hc.isCustomTemplate && hc.templateComponentRef">
+              <Eventellect-dynamic-template
+                [dynamicTemplateConfig]="{ component: hc.templateComponentRef, data: row }"
+              ></Eventellect-dynamic-template>
+            </ng-container>
+
+            <ng-container *ngIf="hc.isCustomActionColumn && hc.rowActions && hc.rowActions.length > 0">
+              <span *ngFor="let action of hc.rowActions" class="grid-action">
+                <ng-container
+                  *ngIf="
+                    action.visibilityHandlerCallback ? (action.visibilityHandlerCallback | globalLibDynamicVisibilityHandler: row) : true
+                  "
+                >
+                  <span *ngIf="action.actionType === ActionType.OutputEvent">
+                    <button
+                      title="{{ action.tooltipTitle }}"
+                      mat-icon-button
+                      color="{{ action.buttonColorClass }}"
+                      [class]="action.buttonColorClass"
+                      aria-label=""
+                      (click)="onCustomActionClick(row, action.name)"
+                    >
+                      <fa-icon *ngIf="action.fontAwesomeIcon" [icon]="action.fontAwesomeIcon"></fa-icon>
+                      <mat-icon *ngIf="action.materialIcon">{{ action.materialIcon }}</mat-icon>
+                    </button>
+                  </span>
+                  <span *ngIf="action.actionType === ActionType.Link">
+                    <button title="{{ action.tooltipTitle }}" mat-icon-button color="{{ action.buttonColorClass }}" aria-label="">
+                      <a routerLink="{{ action.link | globalLibRouteWithId: row[tableConfig.idColumn] }}">
+                        <fa-icon *ngIf="action.fontAwesomeIcon" [icon]="action.fontAwesomeIcon"></fa-icon>
+                        <mat-icon *ngIf="action.materialIcon">{{ action.materialIcon }}</mat-icon>
+                      </a>
+                    </button>
+                  </span>
+                  <span *ngIf="action.actionType === ActionType.MoreActionsMenu && action.subActionsTemplateComponentRef">
+                    <Eventellect-dynamic-template
+                      [dynamicTemplateConfig]="{ component: action.subActionsTemplateComponentRef, data: row }"
+                    ></Eventellect-dynamic-template>
+                  </span>
+                </ng-container>
+              </span>
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+        <ng-container matColumnDef="expandedDetail" *ngIf="tableConfig.expandibleRows">
+          <td mat-cell *matCellDef="let element" [attr.colspan]="(tableConfig.headerConfig | globalLibTableDisplayColumnNames).length">
+            <div class="details-container" [@detailExpand]="element === expandedElement ? 'expanded' : 'collapsed'">
+              <!-- {{ element | json }} -->
+              <Eventellect-dynamic-template
+                [dynamicTemplateConfig]="{ component: tableConfig.expandibleRowTemplateRef, data: element }"
+              ></Eventellect-dynamic-template>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="tableConfig.headerConfig | globalLibTableDisplayColumnNames"></tr>
+        <ng-container *ngIf="!tableConfig.expandibleRows; else expandibleRow">
+          <tr mat-row *matRowDef="let row; columns: tableConfig.headerConfig | globalLibTableDisplayColumnNames"></tr>
+        </ng-container>
+
+        <ng-template #expandibleRow>
+          <tr
+            mat-row
+            *matRowDef="let element; columns: tableConfig.headerConfig | globalLibTableDisplayColumnNames"
+            class="mat-table-row"
+            [class.mat-table-expanded-row]="expandedElement === element"
+            (click)="expandedElement = expandedElement === element ? null : element"
+          ></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: ['expandedDetail']"
+            class="details-row"
+            [class.mat-details-visible]="expandedElement === row"
+          ></tr>
+        </ng-template>
+      </table>
+      <mat-paginator
+        #paginator
+        [length]="tableConfig.totalRecords"
+        [pageIndex]="tableConfig && tableConfig.filters && tableConfig.filters.pageNumber - 1"
+        [pageSize]="tableConfig?.filters?.rows"
+        [pageSizeOptions]="tableConfig?.rowsPerPageOptions || [10, 25, 50]"
+        (page)="onPageChange($event, tableConfig)"
+      >
+      </mat-paginator>
+    </ng-container>
+  </ng-container>
+</div>

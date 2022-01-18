@@ -1,0 +1,46 @@
+@use '../../styles/variables' as variables;
+
+tr.details-row {
+  height: 0;
+}
+.table-container {
+  min-height: 600px;
+  .loader-container {
+    height: 5px;
+  }
+}
+table {
+  width: 100%;
+}
+.details-container {
+  overflow: hidden;
+  display: flex;
+}
+
+button.more-menu-action-item {
+  padding: 0 16px;
+}
+
+button.success {
+  color: variables.$success;
+}
+
+button.danger {
+  color: variables.$danger;
+}
+
+mat-icon {
+  font-size: 23px;
+}
+fa-icon {
+  @include variables.get-theme-color-property(color, primary);
+  font-size: 17px;
+}
+
+.grid-action {
+  button {
+    height: 35px;
+    width: 35px;
+    line-height: 35px;
+  }
+}

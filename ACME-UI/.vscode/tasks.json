@@ -1,0 +1,105 @@
+{
+  "version": "2.0.0",
+  "inputs": [
+    {
+      "id": "terminate",
+      "type": "command",
+      "command": "workbench.action.tasks.terminate",
+      "args": "terminateAll"
+    }
+  ],
+  "tasks": [
+    {
+      "label": "terminate all tasks",
+      "command": "echo ${input:terminate}",
+      "type": "shell",
+      "problemMatcher": []
+    },
+    {
+      "label": "ng serve acme-ui dev local",
+      "type": "npm",
+      "script": "start:acme-ui",
+      "isBackground": true,
+      "presentation": {
+        "focus": true,
+        "panel": "dedicated"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": {
+        "owner": "typescript",
+        "source": "ts",
+        "applyTo": "closedDocuments",
+        "fileLocation": ["relative", "${cwd}"],
+        "pattern": "$tsc",
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": {
+            "regexp": "(.*?)"
+          },
+          "endsPattern": {
+            "regexp": "Compiled |Failed to compile."
+          }
+        }
+      }
+    },
+    {
+      "label": "clean (functions)",
+      "command": "dotnet",
+      "args": ["clean", "/property:GenerateFullPaths=true", "/consoleloggerparameters:NoSummary"],
+      "type": "process",
+      "problemMatcher": "$msCompile",
+      "options": {
+        "cwd": "${workspaceFolder}/function-app"
+      }
+    },
+    {
+      "label": "build (functions)",
+      "command": "dotnet",
+      "args": ["build", "/property:GenerateFullPaths=true", "/consoleloggerparameters:NoSummary"],
+      "type": "process",
+      "dependsOn": "clean (functions)",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": "$msCompile",
+      "options": {
+        "cwd": "${workspaceFolder}/function-app"
+      }
+    },
+    {
+      "label": "clean release (functions)",
+      "command": "dotnet",
+      "args": ["clean", "--configuration", "Release", "/property:GenerateFullPaths=true", "/consoleloggerparameters:NoSummary"],
+      "type": "process",
+      "problemMatcher": "$msCompile",
+      "options": {
+        "cwd": "${workspaceFolder}/function-app"
+      }
+    },
+    {
+      "label": "publish (functions)",
+      "command": "dotnet",
+      "args": ["publish", "--configuration", "Release", "/property:GenerateFullPaths=true", "/consoleloggerparameters:NoSummary"],
+      "type": "process",
+      "dependsOn": "clean release (functions)",
+      "problemMatcher": "$msCompile",
+      "options": {
+        "cwd": "${workspaceFolder}/function-app"
+      }
+    },
+    {
+      "type": "func",
+      "dependsOn": "build (functions)",
+      "options": {
+        "cwd": "${workspaceFolder}/function-app/bin/Debug/net461"
+      },
+      "command": "host start",
+      "isBackground": true,
+      "problemMatcher": "$func-dotnet-watch"
+    }
+  ]
+}

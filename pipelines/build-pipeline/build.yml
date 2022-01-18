@@ -1,0 +1,86 @@
+variables:
+- group: azbackend  #the variable group  will access values from a key vault
+
+trigger:
+  batch: true
+  branches:
+    include:
+    - main   # triggers on merge to main
+
+stages:
+
+- stage: Testing
+  displayName: Validate
+  jobs:
+
+    - job: TEST
+      displayName: Agent job 1
+      pool:
+        vmImage: ubuntu-18.04
+  
+      steps:
+      - checkout: self
+      - task: TerraformInstaller@0
+        displayName: Install Terraform latest
+
+  # Format check
+      - task: CmdLine@2
+        displayName: terraform format
+        inputs:
+          script: terraform fmt 
+          workingDirectory: terraform-code
+
+      -  task: CmdLine@2
+         displayName: terraform init #initlize terraform
+         inputs:
+           script: terraform init -backend-config="access_key=$(stazbackend-key1)"
+           workingDirectory: terraform-code
+
+
+      -  task: CmdLine@2
+         displayName: terraform validate #runs validation command
+         inputs:
+          script: >+
+           terraform validate
+          workingDirectory: terraform-code
+  
+# will need to add code analysis tool to test plan file, Checkov?? TerraScan 
+
+- stage: Planning
+  displayName: Plan
+  jobs:
+
+        - job: PLAN
+          displayName: Agent job 1
+          pool:
+           vmImage: ubuntu-18.04
+
+          steps: 
+          - checkout: self 
+          - task: TerraformInstaller@0
+            displayName: Install Terraform latest # this needs to changed to a specific version to avoid breaks in future
+
+          - task: CmdLine@2
+            displayName: terraform init
+            inputs:
+             script: terraform init -backend-config="access_key=$(stazbackend-key1)" # Setting the backend as a Azure Storage Account
+             workingDirectory: terraform-code
+  
+          - task: CmdLine@2
+            displayName: terraform plan
+            inputs:
+             script: terraform plan -input=false -out=tfplan -var="spn-client-id=$(clientid)" -var="spn-client-secret=$(clientsecret)" -var="spn-tenant-id=$(tenantid)" # Will generate a plan file
+             workingDirectory: terraform-code
+          
+          -   task: ArchiveFiles@2
+              displayName: Archive Files
+              inputs:
+               rootFolderOrFile: terraform-code
+               archiveType: zip
+               archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildNumber)-tfplan.zip #compressing the terraform plan file
+
+          -   task: PublishPipelineArtifact@1
+              displayName: Publish Pipeline Artifact
+              inputs:
+               path: $(Build.ArtifactStagingDirectory)/$(Build.BuildNumber)-tfplan.zip
+               artifactName: $(Build.BuildNumber)-tfplan  #publish the zip artifact

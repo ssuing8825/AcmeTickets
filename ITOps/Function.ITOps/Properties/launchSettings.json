@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Function.ITOps": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7073"
+    }
+  }
+}

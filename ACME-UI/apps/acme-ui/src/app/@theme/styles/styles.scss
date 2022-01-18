@@ -1,0 +1,85 @@
+@use 'theme';
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+.card-mat-icon {
+  vertical-align: middle;
+  height: auto;
+  font-size: 18px;
+}
+.grid-mat-icon {
+  vertical-align: middle;
+  height: auto;
+  font-size: 18px;
+}
+.bar-mat-icon {
+  vertical-align: middle;
+  height: auto;
+  font-size: 24px;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
+.arrow-card-mat-icon {
+  vertical-align: text-top;
+  height: auto;
+  font-size: 17px;
+}
+.success-text {
+  color: $success;
+}
+.accent-text {
+  color: $accent;
+}
+.danger-text {
+  color: $danger;
+}
+.right-border-2 {
+  border-right: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.loader-button {
+  padding: 7px 0;
+}
+.mr-2 {
+  margin-right: 0.5rem;
+}
+.mr-3 {
+  margin-right: 0.75rem;
+}
+.mr-4 {
+  margin-right: 1rem;
+}
+.mr-13 {
+  margin-right: 13rem;
+}
+.mt-3 {
+  margin-top: 1.5rem;
+}
+.p-message {
+  margin: 0.4rem 0 !important;
+}
+.p-message .p-message-wrapper {
+  padding: 0.2rem 1rem !important;
+}
+.p-fileupload .p-fileupload-content {
+  padding: 0.5rem !important;
+}
+.p-fileupload .p-fileupload-buttonbar {
+  padding: 0.5rem !important;
+}
+.link {
+  @include get-theme-color-property(color, primary);
+}
+.underline {
+  text-decoration: underline;
+}

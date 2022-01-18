@@ -1,0 +1,35 @@
+@use '@angular/material' as mat;
+
+@use '@swimlane/ngx-datatable/index.css';
+@use '@swimlane/ngx-datatable/themes/material.scss';
+@use '@swimlane/ngx-datatable/assets/icons.css';
+
+@use './variables' as variables;
+
+$custom-typography: mat.define-typography-config(
+  // Specify "Lato sans-serif" as the default font family for all levels.
+  $font-family: '"Lato", sans-serif;'
+);
+
+@include mat.core(variables.$custom-typography);
+
+// Apply the light theme only when the `.my-light-theme` CSS class is applied
+// to an ancestor element of the components (such as `body`).
+@include mat.core-color(variables.$light-theme);
+@include mat.button-color(variables.$light-theme);
+
+// Include the dark color styles inside of a block with a CSS class. You can make this
+// CSS class whatever you want. In this example, any component inside of an element with
+// `.dark-theme` will be affected by this alternate dark theme instead of the default theme.
+.dark-theme {
+  @include mat.core-color(variables.$dark-theme);
+  @include mat.button-color(variables.$light-theme);
+}
+
+mat-card-title {
+  font {
+    font-size: 17px;
+    font-weight: bold;
+    // @include variables.get-theme-color-property(color, primary);
+  }
+}

@@ -1,0 +1,15 @@
+@use '../../styles/variables' as variables;
+
+.widget-card {
+  @include variables.card-position();
+}
+
+.table-container {
+  height: 220px;
+}
+
+.card-menu {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+}

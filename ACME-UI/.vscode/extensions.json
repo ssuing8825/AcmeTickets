@@ -1,0 +1,19 @@
+{
+  "recommendations": [
+    "ms-azuretools.vscode-azurefunctions",
+    "ms-dotnettools.csharp",
+    "angular.ng-template",
+    "cyrilletuzi.angular-schematics",
+    "dbaeumer.vscode-eslint",
+    "eamodio.gitlens",
+    "esbenp.prettier-vscode",
+    "firsttris.vscode-jest-runner",
+    "gruntfuggly.todo-tree",
+    "ms-vscode.vs-keybindings",
+    "msjsdiag.debugger-for-chrome",
+    "nrwl.angular-console",
+    "streetsidesoftware.code-spell-checker",
+    "syler.sass-indented",
+    "visualstudioexptteam.vscodeintellicode"
+  ]
+}

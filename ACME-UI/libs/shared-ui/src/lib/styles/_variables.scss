@@ -1,0 +1,171 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+// @import '~@angular/material';
+// @include mat.core();
+
+$app-primary: (
+  50: #e2ecf2,
+  100: #b8cfde,
+  200: #88afc9,
+  300: #588eb3,
+  400: #3576a2,
+  500: #115e92,
+  600: #0f568a,
+  700: #0c4c7f,
+  800: #0a4275,
+  900: #053163,
+  A100: #94bfff,
+  A200: #61a0ff,
+  A400: #2e82ff,
+  A700: #1573ff,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #ffffff,
+    A700: #ffffff,
+  ),
+);
+
+$app-accent: (
+  50: #e0f5f5,
+  100: #b3e6e6,
+  200: #80d6d6,
+  300: #4dc5c5,
+  400: #26b8b8,
+  500: #00acac,
+  600: #00a5a5,
+  700: #009b9b,
+  800: #009292,
+  900: #008282,
+  A100: #afffff,
+  A200: #7cffff,
+  A400: #49ffff,
+  A700: #30ffff,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
+  ),
+);
+
+// Define the default theme (same as the example above).
+$light-primary: mat.define-palette($app-primary);
+$light-accent: mat.define-palette($app-accent);
+$light-warn: mat.define-palette(mat.$deep-orange-palette);
+$light-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $light-primary,
+      accent: $light-accent,
+      warn: $light-warn,
+    ),
+  )
+);
+
+$primary: #153c73;
+$accent: #fdd835;
+$success: #5aa454;
+$danger: #c00000;
+$warning: #ffc116;
+
+// $light-theme: map_merge(
+//   $light-theme,
+//   (
+//     custom: $utility-color-palette,
+//   )
+// );
+
+// Define an alternate dark theme.
+$dark-primary: mat.define-palette(mat.$blue-gray-palette);
+$dark-accent: mat.define-palette(mat.$amber-palette, A200, A100, A400);
+$dark-warn: mat.define-palette(mat.$deep-orange-palette);
+$dark-theme: mat.define-dark-theme(
+  (
+    color: (
+      primary: $dark-primary,
+      accent: $dark-accent,
+      warn: $dark-warn,
+    ),
+  )
+);
+
+// $dark-theme: map_merge(
+//   $light-theme,
+//   (
+//     custom: $utility-color-palette,
+//   )
+// );
+
+/// Gets the CSS property and it's computed value for both light and dark themes.
+///
+/// @param {String} $property The css property to set. ex: background, color, background-color, border-color etc.
+/// @param {String} $color Theme color. Accepted values are: primary, accent, or warn.
+/// @param {String | Number} $hue The hue from the palette to use. If this is a value between 0 and 1, it will be treated as opacity. Ex values: 500, 500-contrast, darker, darker-contrast
+/// @returns {CssProperty} CSS property with it's computed value for the both light and dark themes.
+@mixin get-theme-color-property($property: null, $color: null, $hue: null) {
+  // Get the color config from the theme.
+  $light-color-config: mat.get-color-config($light-theme);
+  // Get the required color palette from the color-config.
+  $light-color-palette: map.get($light-color-config, $color);
+
+  // Get the color config from the theme.
+  $dark-color-config: mat.get-color-config($dark-theme);
+  // Get the required color palette from the color-config.
+  $dark-color-palette: map.get($dark-color-config, $color);
+  @if $hue != null {
+    // Finally get the desired color with the specified hue.
+    $light-color: mat.get-color-from-palette($light-color-palette, $hue);
+
+    // Finally get the desired color with the specified hue.
+    $dark-color: mat.get-color-from-palette($dark-color-palette, $hue);
+    & {
+      #{$property}: $light-color;
+    }
+
+    .dark-theme & {
+      #{$property}: $dark-color;
+    }
+  } @else {
+    // Finally get the desired color with the specified hue.
+    $light-color: mat.get-color-from-palette($light-color-palette);
+
+    // Finally get the desired color with the specified hue.
+    $dark-color: mat.get-color-from-palette($dark-color-palette);
+    & {
+      #{$property}: $light-color;
+    }
+
+    .dark-theme & {
+      #{$property}: $dark-color;
+    }
+  }
+}
+
+@mixin card-position() {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  bottom: 15px;
+}

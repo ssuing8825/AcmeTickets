@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <UserSecretsId>4006aab7-85a4-4a44-b9ba-17f43a24b72e</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
+    <PackageReference Include="NServiceBus" Version="7.6.0" />
+    <PackageReference Include="NServiceBus.Extensions.Hosting" Version="1.1.0" />
+    <PackageReference Include="NServiceBus.Transport.AzureServiceBus" Version="2.0.2" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Nsb.Commons\Acme.Nsb.Commons.csproj" />
+    <ProjectReference Include="..\Contracts\AcmeTickets.Inventory.Contracts.csproj" />
+    <ProjectReference Include="..\Domain\AcmeTickets.Inventory.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

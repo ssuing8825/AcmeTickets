@@ -1,0 +1,10 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "AzureWebJobsServiceBus": "Endpoint=sb://eventellectstandardsbus.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=jDYKocpcqjIJe7nr0A2rEmsrU0GNHi7WhGcuOUPwwzg=",
+    "DbConnectionString": "AccountEndpoint=https://eventellectdb.documents.azure.com:443/;AccountKey=Yiuw9cYJPZKPEbumKW2SbE2lf7lS8g966TSWn2kZoswgcbbXxIbJUh2dApZaeWaap2CdcL6NPaeIkMLdpCef0w==;",
+    "DatabaseName": "Samples.CosmosDB.Simple"
+  }
+}

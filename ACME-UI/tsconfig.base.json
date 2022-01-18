@@ -1,0 +1,27 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2017", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@acme/shared-ui": ["libs/shared-ui/src/index.ts"],
+      "@core/*": ["./apps/acme-ui/src/app/@core/*"],
+      "@globalLib/shared-ui": ["libs/shared-ui/src/index.ts"],
+      "@shared/*": ["./apps/acme-ui/src/app/@shared/*"],
+      "@theme/*": ["./apps/acme-ui/src/app/@theme/*"],
+      "pages/*": ["./apps/acme-ui/src/app/pages/*"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

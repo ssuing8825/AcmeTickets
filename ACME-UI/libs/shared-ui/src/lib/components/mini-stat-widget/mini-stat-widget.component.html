@@ -1,0 +1,62 @@
+<mat-card class="min-stat-widget" *subscribe="options$; let options">
+  <mat-card-header class="mini-stat-card-header">
+    <mat-card-title>
+      <!-- <div class="card-title">
+      </div> -->
+      <font class="">{{ options?.name }}</font>
+
+      <button mat-icon-button class="card-menu" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu" xPosition="before">
+        <button mat-menu-item>Day</button>
+        <button mat-menu-item>week</button>
+        <button mat-menu-item>Month</button>
+      </mat-menu>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content *ngIf="options && options.name" class="dashboard-card-content">
+    <div class="text" fxLayout="column" fxLayoutAlign="space-evenly center">
+      <div>
+        <span class="total mat-display-2">{{ options.total }}</span>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="space-evenly center">
+        <div>
+          <span fxLayout="row" fxLayoutAlign="center center" class="gain success" *ngIf="options.gain > 0"
+            ><mat-icon class="trend success">trending_up</mat-icon>
+            <div>{{ options.gain }}%&nbsp;</div></span
+          >
+          <span fxLayout="row" fxLayoutAlign="center center" class="gain warning" *ngIf="options.gain === 0"
+            ><mat-icon class="trend warning">trending_flat</mat-icon>
+            <div>{{ options.gain }}%&nbsp;</div></span
+          >
+          <span fxLayout="row" fxLayoutAlign="center center" class="gain danger mat-small" *ngIf="options.gain < 0"
+            ><mat-icon class="trend danger">trending_down</mat-icon>
+            <div>{{ options.gain }}%&nbsp;</div></span
+          >
+        </div>
+        <div>
+          <span class="description mat-small"> {{ options.metaText }} </span>
+        </div>
+      </div>
+    </div>
+    <ng-container *ngIf="!options.hideChart">
+      <div *subscribe="showChart$; let showChart" class="chart-container">
+        <ngx-charts-area-chart-stacked
+          *ngIf="showChart && options && options.data && options.data.length > 0"
+          [scheme]="options.colorScheme"
+          [legend]="false"
+          [showXAxisLabel]="false"
+          [showYAxisLabel]="false"
+          [xAxis]="false"
+          [yAxis]="false"
+          [xAxisLabel]="''"
+          [yAxisLabel]="''"
+          [timeline]="false"
+          [results]="options.data"
+        >
+        </ngx-charts-area-chart-stacked>
+      </div>
+    </ng-container>
+  </mat-card-content>
+</mat-card>

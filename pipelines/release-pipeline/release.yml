@@ -1,0 +1,59 @@
+
+variables:
+  - group: azbackend
+trigger: none  
+resources: 
+  pipelines:
+  - pipeline: BUILD  # triggers after successful merge
+    source: PLAN
+    trigger:
+     branches:
+      include:
+        - main
+# In future we will add stages for Dev, Test and Prod
+stages:
+- stage: Apply
+  displayName: Apply
+
+  jobs:
+  - job: apply
+    pool:
+     name: Azure Pipelines
+
+    steps:
+    - checkout: self
+
+    - task: DownloadBuildArtifacts@1
+      inputs:
+       buildType: 'specific'
+       project: 'e776df09-ea6d-4dc2-99ae-abe355b2688c'
+       pipeline: '33' # will be changed to the build pipeline
+       buildVersionToDownload: 'latest'
+       downloadType: 'single'
+       artifactName: '$(Build.BuildNumber)-tfplan'
+       downloadPath: '$(System.ArtifactsDirectory)/'
+
+    - task: ExtractFiles@1
+      displayName: 'Extract files'
+      inputs:
+       archiveFilePatterns: '$(System.ArtifactsDirectory)/$(Build.BuildNumber)-tfplan.zip'
+       destinationFolder: '$(System.DefaultWorkingDirectory)/'
+       cleanDestinationFolder: false
+       overwriteExistingFiles: true 
+
+    - task: TerraformInstaller@0
+      displayName: Install Terraform latest
+
+    - task: CmdLine@2
+      displayName: terraform init
+      inputs:
+       script: terraform init -backend-config="access_key=$(stazbackend-key1)"
+       workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-code/'
+
+  
+    - task: CmdLine@2
+      timeoutInMinutes: 0
+      displayName: terraform apply # Actually applies the changes
+      inputs:
+       script: terraform apply -auto-approve -input=false tfplan
+       workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-code/'
