@@ -1,0 +1,12 @@
+{
+  "name": "acmetickets",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "aef:scan": "node scripts/aef-scan.mjs --target .",
+    "aef:report": "node scripts/aef-report.mjs --assessment docs/assessment/readiness-assessment.json",
+    "aef:metrics": "node scripts/aef-collect-metrics.mjs",
+    "aef:adoption": "node scripts/aef-check-adoption.mjs"
+  }
+}
