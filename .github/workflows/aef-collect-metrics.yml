@@ -1,0 +1,78 @@
+name: Collect Metrics
+
+on:
+  schedule:
+    # Every Monday at 06:00 UTC
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+    inputs:
+      period_days:
+        description: 'Collection period in days'
+        required: false
+        default: '30'
+      target_repo:
+        description: 'Target repo (owner/repo). Defaults to current repo.'
+        required: false
+
+permissions:
+  contents: write
+  issues: read
+  pull-requests: read
+  actions: read
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout (full history)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check framework adoption
+        run: node scripts/check-adoption.mjs
+
+      - name: Collect metrics
+        env:
+          PERIOD_DAYS: ${{ github.event.inputs.period_days || '30' }}
+          TARGET_REPO: ${{ github.event.inputs.target_repo || github.repository }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          node scripts/collect-metrics.mjs \
+            --repo "$TARGET_REPO" \
+            --token "$GITHUB_TOKEN" \
+            --period "$PERIOD_DAYS"
+
+      - name: Refresh governance grid
+        run: |
+          if [ -f "scripts/generate-governance-grid.mjs" ]; then
+            node scripts/generate-governance-grid.mjs
+          else
+            echo "generate-governance-grid.mjs not present — skipping"
+          fi
+
+      - name: Check for changes
+        id: diff
+        run: |
+          git diff --quiet metrics/ docs/governance/ 2>/dev/null \
+            && echo "changed=false" >> "$GITHUB_OUTPUT" \
+            || echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Commit and push metrics
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add metrics/ docs/governance/ 2>/dev/null || git add metrics/
+          git commit -m "chore(metrics): weekly metrics collection [skip ci]"
+          git push
